@@ -2,11 +2,15 @@ import "dotenv/config"
 import { deployContract, deployUpgradeableContract } from "./utils"
 import { MoonMaceStaking, MoonMaceToken } from "../typechain-types"
 import { parseEther } from "ethers"
+import { ethers } from "hardhat"
 
 async function main() {
-  const mcMON = await deployContract("MoonMaceToken", [], true) as MoonMaceToken
+  // const mcMON = await deployContract("MoonMaceToken", [], true) as MoonMaceToken
+  const mcMON = await ethers.getContractAt(
+    "MoonMaceToken", process.env.MONADTEST_MOONMACE_TOKEN!
+  ) as MoonMaceToken
   const moonMaceStaking = await deployUpgradeableContract(
-    "MoonMaceStaking", [await mcMON.getAddress()], true
+    "MoonMaceStakingTest", [await mcMON.getAddress()], true
   ) as MoonMaceStaking
 
   await mcMON.setMinter(await moonMaceStaking.getAddress(), true)

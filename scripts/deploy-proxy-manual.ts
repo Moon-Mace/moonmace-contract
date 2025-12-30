@@ -7,12 +7,14 @@ import { ethers } from "hardhat"
 async function main() {
   const [admin] = await ethers.getSigners()
 
-  const mcMON = await ethers.getContractAt(
-    "MoonMaceToken", process.env.MONAD_MC_MON!
-  ) as MoonMaceToken
+  // const mcMON = await ethers.getContractAt(
+  //   "MoonMaceToken", process.env.MONADTEST_MOONMACE_TOKEN!
+  // ) as MoonMaceToken
+  const mcMON = await deployContract("MoonMaceToken", [], true) as MoonMaceToken
 
+  const impl = await deployContract("MoonMaceStakingTest", [], true) as MoonMaceStaking
   const proxy = await deployContract("TransparentUpgradeableProxy", [
-    process.env.MONAD_MC_STAKING_IMPL!,
+    await impl.getAddress(),
     admin.address,
     "0xc4d66de8" + "000000000000000000000000" + (await mcMON.getAddress()).slice(2),
       // selector for `initialize(address mcMONTokenAddress)`
