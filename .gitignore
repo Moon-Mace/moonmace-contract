@@ -19,3 +19,7 @@ typechain-types
 
 # others
 outputabi.py
+
+# broadcast logs
+!/broadcast
+/broadcast/*/143/run-1*.json

@@ -4,7 +4,15 @@ import "@openzeppelin/hardhat-upgrades";
 import "dotenv/config";
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.28",
+  solidity: {
+    version: "0.8.28",
+    settings: {
+      metadata: {
+        bytecodeHash: "none", // disable ipfs
+        useLiteralContent: true // store source code in the json file directly
+      }
+    }
+  },
   networks: {
     sepolia: {
       url: process.env.RPC_SEPOLIA,
@@ -17,7 +25,13 @@ const config: HardhatUserConfig = {
       accounts: [
         process.env.PRIVATE_KEY_ADMIN!,
       ]
-    }
+    },
+    monad: {
+      url: "https://rpc.monad.xyz",
+      accounts: [
+        process.env.PRIVATE_KEY_ADMIN!,
+      ]
+    },
   },
   etherscan: {
     enabled: false
@@ -25,8 +39,8 @@ const config: HardhatUserConfig = {
   sourcify: {
     enabled: true,
     apiUrl: "https://sourcify-api-monad.blockvision.org",
-    browserUrl: "https://testnet.monadexplorer.com"
-  }
+    browserUrl: "https://monadvision.com/"
+  },
 };
 
 export default config;
